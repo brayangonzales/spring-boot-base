@@ -28,7 +28,12 @@ public class configSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().authenticated().and().formLogin().permitAll();
+       // http.authorizeRequests().anyRequest().authenticated().and().formLogin();
+       http.authorizeRequests()
+       .antMatchers("/**").permitAll()
+       .antMatchers("/subRuta*","/nombre*","/usuario*").access("hasRole('USER')")
+       .anyRequest().authenticated().and().formLogin().loginPage("/po").permitAll()
+       .failureUrl("/?error=true");
     }
 
 }
